@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clase 2 con Albert Calasanz - (Nombre)</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.min.js"
+      integrity="sha512-n8IpKWzDnBOcBhRlHirMZOUvEq2bLRMuJGjuVqbzUJwtTsgwOgK5aS0c1JA647XWYfqvXve8k3PtZdzpipFjgg=="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="
+./OrbitControls.js
+"></script>
+    <link rel="shortcut icon" href="fav.png" type="image/x-icon" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>Activa tu JavaScript</noscript>
+    <script type="module">
+      let mixer;
+      let scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      scene.background = new THREE.Color(0xf9c9b9);
+
+      const loader = new THREE.GLTFLoader();
+      loader.load("../../blossoming_boombox/scene.gltf", function (gltf) {
+        scene.add(gltf.scene);
+        mixer = new THREE.AnimationMixer(gltf.scene);
+        const action = mixer.clipAction(gltf.animations[0]);
+        action.play();
+
+        main();
+      });
+      const clock = new THREE.Clock();
+      function main() {
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        // controls.autoRotate = true;
+        // controls.enableDamping = true;
+        controls.maxDistance = 5;
+        controls.minDistance = 1;
+        camera.position.z = 1;
+        camera.position.y = 5;
+        camera.position.x = 1;
+
+        function animate() {
+          requestAnimationFrame(animate);
+          controls.update();
+          const delta = clock.getDelta();
+          mixer.update(delta);
+          renderer.render(scene, camera);
+        }
+        animate();
+      }
+    </script>
+  </body>
+</html>
