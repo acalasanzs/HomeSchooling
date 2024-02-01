@@ -1,6 +1,11 @@
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
+function initCanvas() {
+  c.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
+  c.fillStyle = "rgba(0,0,0,0.95)";
+  c.fillRect(0, 0, window.innerWidth, window.innerHeight);
+}
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
@@ -39,7 +44,7 @@ const player = new Jugador(x, y, radius, "blue");
 function animate() {
     movimiento.update();
     requestAnimationFrame(animate);
-    c.clearRect(0,0,canvas.width, canvas.height);
+    initCanvas()
     x = movimiento.x;
     y = movimiento.y;
     player.x = x;
