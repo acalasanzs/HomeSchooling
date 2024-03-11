@@ -1,2 +1,1 @@
-
-circle_velocity = 5
+and direction != "DOWN"
